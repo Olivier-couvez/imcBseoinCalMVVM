@@ -9,6 +9,7 @@ using System.ComponentModel;
 using System.Windows.Input;
 using System.Windows;
 using System.Windows.Media;
+using System.Collections.ObjectModel;
 
 namespace ImcPoidsMVVM.ViewModels
 {
@@ -40,13 +41,33 @@ namespace ImcPoidsMVVM.ViewModels
         private int taillecm;
         private decimal imc; // indice de masse corporelle
         private decimal poids; // poids calculé selon la formule de Lorentz
+        private int age; // age du sujet
         private decimal poidsIdeal; // poids calculé selon la formule de Devine
+        private decimal besoinCal; // Besoin en calorie calculée selon la moyenne des deux formules Mifflin St-Jeor et Harris-Benedict
         private string categorie;
         public int Taillecm { get => taillecm; set { taillecm = value; OnPropertyChanged("Taillecm"); } }
         public decimal Imc { get => imc; set { imc = value; OnPropertyChanged("Imc"); } }
         public decimal Poids { get => poids; set { poids = value; OnPropertyChanged("Poids"); } }
+        public int Age { get => age; set { age = value; OnPropertyChanged("Age"); } }
         public decimal PoidsIdeal { get => poidsIdeal; set { poidsIdeal = value; OnPropertyChanged("PoidsIdeal"); } }
+        public decimal BesoinCal { get => besoinCal; set { besoinCal = value; OnPropertyChanged("BesoinCal"); } }
         public string Categorie { get => categorie; set { categorie = value; OnPropertyChanged("Categorie"); } }
+
+        private ObservableCollection<TxActivite> _txActivites;
+
+        public ObservableCollection<TxActivite> TxActivites
+        {
+            get { return _txActivites; }
+            set { _txActivites = value; }
+        }
+        private TxActivite _txActivite;
+
+        public TxActivite STxActivite
+        {
+            get { return _txActivite; }
+            set { _txActivite = value; }
+        }
+
 
         private void OnPropertyChanged(string v)
         {
@@ -69,6 +90,14 @@ namespace ImcPoidsMVVM.ViewModels
             NouveauCalcul = new Command(NouveauCalculAction);
             btnFemmeClick = new Command(btnFemmeClickAction);
             btnHommeClick = new Command(btnHommeClickAction);
+            TxActivites = new ObservableCollection<TxActivite>()
+            {
+                new TxActivite(){Id=1.1M, TxActiv="Sédentaire"},
+                new TxActivite(){Id=1.2M, TxActiv="Activité physique légère"},
+                new TxActivite(){Id=1.3M, TxActiv="Activité physique modérée"},
+                new TxActivite(){Id=1.4M, TxActiv="Activité physique quotidienne"},
+                new TxActivite(){Id=1.5M, TxActiv="Activité physique intense"}
+            };
         }
 
         private bool verifSaisie()
@@ -86,6 +115,11 @@ namespace ImcPoidsMVVM.ViewModels
                 if ((poidsSujet < 20) || (poidsSujet > 180))
                 {
                     poids = 0;
+                    saisieOk = false;
+                }
+
+                if (age == 0)
+                {
                     saisieOk = false;
                 }
             }
@@ -120,6 +154,7 @@ namespace ImcPoidsMVVM.ViewModels
             }
         }
 
+
         private void CalculEtaffichage(bool sexe)
         {
             // céation du sujet
@@ -127,6 +162,9 @@ namespace ImcPoidsMVVM.ViewModels
             monSujet.Sexe = sexe;
             monSujet.Taillecm = Taillecm;
             monSujet.Poids = Convert.ToDecimal(poids);
+            monSujet.Age = Age;
+            //    monSujet.Coef = Convert.ToDecimal(STxActivite.Id);
+            monSujet.Coef = 1.2M;
             CalculIMCPoids mesCalculs = new CalculIMCPoids(monSujet);
             mesCalculs.CalculeIMC();
             if (monSujet.Sexe == true)
@@ -143,6 +181,8 @@ namespace ImcPoidsMVVM.ViewModels
             // récup catégorie
             mesCalculs.Categorie();
             Categorie = monSujet.Categorie;
+
+            BesoinCal = monSujet.BesoinCalorie;
 
 
             /*
@@ -201,6 +241,9 @@ namespace ImcPoidsMVVM.ViewModels
             Imc = 0;
             PoidsIdeal = 0;
             Categorie = "";
+            STxActivite = null;
+            Age = 0;
+            BesoinCal = 0;
         }
     }
 }

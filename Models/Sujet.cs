@@ -15,6 +15,9 @@ namespace ImcPoidsMVVM.Models
         private decimal poids; // poids calculé selon la formule de Lorentz
         private decimal poidsIdeal; // poids calculé selon la formule de Devine
         private string categorie;
+        private int age;
+        private decimal coef;
+        private decimal besoinCalorie;
         #endregion
 
         #region proprietes
@@ -25,6 +28,9 @@ namespace ImcPoidsMVVM.Models
         public decimal Poids { get => poids; set => poids = value; }
         public decimal PoidsIdeal { get => poidsIdeal; set => poidsIdeal = value; }
         public string Categorie { get => categorie; set => categorie = value; }
+        public int Age { get => age; set => age = value; }
+        public decimal Coef { get => coef; set => coef = value; }
+        public decimal BesoinCalorie { get => besoinCalorie; set => besoinCalorie = value; }
 
         #endregion
 
@@ -37,7 +43,9 @@ namespace ImcPoidsMVVM.Models
             Poids = decimal.MinValue;
             PoidsIdeal = decimal.MinValue;
             categorie = string.Empty;
-
+            age = int.MinValue;
+            coef = decimal.MinValue;
+            besoinCalorie = decimal.MinValue;
         }
 
 

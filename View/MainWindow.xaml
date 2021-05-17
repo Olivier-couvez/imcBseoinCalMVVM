@@ -3,28 +3,43 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:viewmodel="clr-namespace:ImcPoidsMVVM.ViewModels"
         xmlns:local="clr-namespace:ImcPoidsMVVM"
         mc:Ignorable="d"
-        Title="Calcul IMC" Height="800" Width="450" FontFamily="Century Gothic">
-    <Grid x:Name="ImcPoids" Margin="0,0,0,0" Width="450" Height="800"  >
+        Title="Calcul IMC" Height="800" Width="500" FontFamily="Century Gothic">
+    <Window.Resources>
+        <viewmodel:MainWindowViewModel x:Key="vm"></viewmodel:MainWindowViewModel>
+    </Window.Resources>
+    <Grid x:Name="ImcPoids" Margin="0,0,0,0" Width="500" Height="800"  >
         <Label Content="Cacul de vos IMC et poids Idéal" HorizontalAlignment="Center" VerticalAlignment="Top" Width="310" Foreground="#AE1281" FontWeight="Bold" FontSize="18" Height="39" Margin="0,20,0,0"/>
         <Label x:Name="lblTaille" Content="Votre taille (cm)" HorizontalAlignment="Left" Margin="30,90,0,0" VerticalAlignment="Top" Height="35" Width="142" FontSize="14" Foreground="#859BF6"/>
         <Label x:Name="lblPoids" Content="Votre poids (kg)" HorizontalAlignment="Left" Margin="30,145,0,0" VerticalAlignment="Top" Height="35" Width="135" FontSize="14" Foreground="#859BF6"/>
         <TextBox x:Name="txtBoxTaille" HorizontalAlignment="Left" Margin="208,90,0,0" Text="{Binding Path=Taillecm, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, StringFormat=window heigh:{#:F0} }" TextWrapping="Wrap" VerticalAlignment="Top" Width="77" Height="27" FontSize="14" VerticalContentAlignment="Center"/>
         <TextBox x:Name="txtBoxPoids" HorizontalAlignment="Left" Margin="208,145,0,0" Text="{Binding Path=Poids, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, StringFormat=window heigh:{#:F0}}" TextWrapping="Wrap" VerticalAlignment="Top" Height="25" Width="77" FontSize="14" VerticalContentAlignment="Center"/>
-        <Label x:Name="lblSexe" Content="Précisez votre sexe" HorizontalAlignment="Left" Margin="160,235,0,0" VerticalAlignment="Top" Height="25" Width="173" FontSize="16" RenderTransformOrigin="0.88,0.602" FontWeight="Bold"/>
-        <Button x:Name="btnFemme" Command="{Binding btnFemmeClick}" Content="Femme" HorizontalAlignment="Left" Margin="94,286,0,0" VerticalAlignment="Top" Height="38" Width="110" FontSize="16" FontWeight="Bold" Background="#FFC0FF"/>
-        <Button x:Name="btnHomme" Command="{Binding btnHommeClick}" Content="Homme" HorizontalAlignment="Left" Margin="262,286,0,0" VerticalAlignment="Top" Height="38" Width="110" FontSize="16" FontWeight="Bold" Background="#C0FFFF"/>
+        <Label x:Name="lblAge" Content="Votre age (années)" HorizontalAlignment="Left" Margin="30,185,0,0" VerticalAlignment="Top" Height="35" Width="142" FontSize="14" Foreground="#859BF6"/>
+        <TextBox x:Name="txtBoxAge" HorizontalAlignment="Left" Margin="208,190,0,0" Text="{Binding Age, Mode=TwoWay, StringFormat=window heigh:\{#:F0\}, UpdateSourceTrigger=PropertyChanged}" TextWrapping="Wrap" VerticalAlignment="Top" Height="25" Width="77" FontSize="14" VerticalContentAlignment="Center"/>
+        <Label x:Name="lblActivite" Content="Choix Activité" HorizontalAlignment="Left" Margin="30,233,0,0" VerticalAlignment="Top" Height="35" Width="142" FontSize="14" Foreground="#859BF6"/>
+        <StackPanel Orientation="Vertical" DataContext="{Binding Source={StaticResource vm}}">
+            <ComboBox x:Name="ComboBoxActivite" 
+                  ItemsSource="{Binding Path=TxActivites}" SelectedItem="{Binding Path=STxActivite}" DisplayMemberPath="TxActiv"
+                  HorizontalAlignment="Left" Margin="197,236,0,0" Width="253" Height="23"/>
+        </StackPanel>
+        <Label x:Name="lblSexe" Content="Précisez votre sexe" HorizontalAlignment="Left" Margin="160,273,0,0" VerticalAlignment="Top" Height="34" Width="173" FontSize="16" RenderTransformOrigin="0.88,0.602" FontWeight="Bold"/>
+        <Button x:Name="btnFemme" Command="{Binding btnFemmeClick}" Content="Femme" HorizontalAlignment="Left" Margin="94,324,0,0" VerticalAlignment="Top" Height="38" Width="110" FontSize="16" FontWeight="Bold" Background="#FFC0FF"/>
+        <Button x:Name="btnHomme" Command="{Binding btnHommeClick}" Content="Homme" HorizontalAlignment="Left" Margin="262,324,0,0" VerticalAlignment="Top" Height="38" Width="110" FontSize="16" FontWeight="Bold" Background="#C0FFFF"/>
         <Label x:Name="lblVotreImc" Content="Votre IMC" HorizontalAlignment="Center" Margin="0,384,0,0" VerticalAlignment="Top" FontSize="18" Foreground="#8094B7"/>
         <Label x:Name="lblValeur" Content="Valeur" HorizontalAlignment="Left" Margin="91,419,0,0" VerticalAlignment="Top" FontSize="14" FontWeight="Bold" Width="67"/>
         <Label x:Name="lblCategorie" Content="Catégorie" HorizontalAlignment="Left" Margin="294,419,0,0" VerticalAlignment="Top" FontSize="14" FontWeight="Bold"/>
         <TextBox x:Name="txtBoxValeur" Background="{Binding BackgroundCouleur}" HorizontalAlignment="Left" Margin="30,465,0,0" Text="{Binding Path=Imc, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, StringFormat=\{0:F2\}}" TextWrapping="Wrap" VerticalAlignment="Top" Width="157" FontSize="14" FontWeight="Bold" TextAlignment="Center"/>
         <TextBox x:Name="txtBoxCategorie" Background="{Binding BackgroundCouleur}" HorizontalAlignment="Left" Margin="268,465,0,0" Text="{Binding Path=Categorie, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" TextWrapping="Wrap" VerticalAlignment="Top" Width="157" FontSize="14" FontWeight="Bold"/>
-        <Label x:Name="lblIPoidsIdeal" Content="Poids Idéal" HorizontalAlignment="Left" Margin="168,522,0,0" VerticalAlignment="Top" FontSize="18" Foreground="#8094B7" FontWeight="Bold"/>
-        <TextBox x:Name="txtBoxPoidsIdeal" HorizontalAlignment="Left" Margin="168,572,0,0" Text="{Binding Path=PoidsIdeal, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, StringFormat=\{0:F2\}}" TextWrapping="Wrap" VerticalAlignment="Top" Width="86" FontSize="14" Height="23" TextAlignment="Center"/>
-        <Label x:Name="lblKg" Content="Kg" HorizontalAlignment="Left" Margin="255,570,0,0" VerticalAlignment="Top" FontSize="16" FontWeight="Bold"/>
+        <Label x:Name="lblIPoidsIdeal" Content="Poids Idéal" HorizontalAlignment="Left" Margin="55,531,0,0" VerticalAlignment="Top" FontSize="18" Foreground="#8094B7" FontWeight="Bold"/>
+        <TextBox x:Name="txtBoxPoidsIdeal" HorizontalAlignment="Left" Margin="55,581,0,0" Text="{Binding Path=PoidsIdeal, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, StringFormat=\{0:F2\}}" TextWrapping="Wrap" VerticalAlignment="Top" Width="86" FontSize="14" Height="23" TextAlignment="Center"/>
+        <Label x:Name="lblKg" Content="Kg" HorizontalAlignment="Left" Margin="142,579,0,0" VerticalAlignment="Top" FontSize="16" FontWeight="Bold"/>
         <Button x:Name="btnQuitter" Command="{Binding QuitterAppli}" Content="Quitter" HorizontalAlignment="Left" Margin="325,688,0,0" VerticalAlignment="Top" FontSize="16" FontWeight="Bold" Width="85"/>
         <Button x:Name="btnNouveau" Command="{Binding NouveauCalcul}" Content="Nouveau" HorizontalAlignment="Left" Margin="225,688,0,0" VerticalAlignment="Top" FontSize="16" FontWeight="Bold" Width="85"/>
+        <Label x:Name="lblIBesoin" Content="Besoin en Calories" HorizontalAlignment="Left" Margin="248,531,0,0" VerticalAlignment="Top" FontSize="18" Foreground="#8094B7" FontWeight="Bold"/>
+        <TextBox x:Name="txtBoxBesoin" HorizontalAlignment="Left" Margin="280,581,0,0" Text="{Binding BesoinCal, Mode=TwoWay, StringFormat=\{0:F2\}, UpdateSourceTrigger=PropertyChanged}" TextWrapping="Wrap" VerticalAlignment="Top" Width="86" FontSize="14" Height="23" TextAlignment="Center"/>
+        <Label x:Name="lblCalories" Content="Cal." HorizontalAlignment="Left" Margin="368,579,0,0" VerticalAlignment="Top" FontSize="16" FontWeight="Bold"/>
 
     </Grid>
 </Window>
